@@ -10,10 +10,15 @@ export function LinearMap() {
   const currentIndex = useGame((s) => s.currentIndex)
   const destinationIndex = useGame((s) => s.destinationIndex)
   const direction = useGame((s) => s.direction)
+  const serviceId = useGame((s) => s.serviceId)
   const travelTo = useGame((s) => s.travelTo)
 
   const line = RIDEABLE[lineId]
   const n = line.stations.length
+
+  // 停車駅ビュー: 通過駅のある種別を選択中なら停車駅の Set（全駅停車なら null = 従来表示）
+  const service = line.services?.find((sv) => sv.id === serviceId)
+  const stopSet = service && service.stops !== 'all' ? new Set(service.stops) : null
 
   const { pts, dx, rowGap } = useMemo(() => serpentineLayout(n), [n])
   const pathD = useMemo(() => serpentinePathD(pts), [pts])
@@ -62,6 +67,8 @@ export function LinearMap() {
         const isCurrent = i === currentIndex
         const isDest = i === destinationIndex
         const canTap = i !== currentIndex // タップは常に受付
+        const isStop = stopSet == null || stopSet.has(s.id)
+        const passed = !isStop // 選択中の種別が通過する駅（表示のみ。タップ移動は可能）
 
         return (
           <g
@@ -80,11 +87,23 @@ export function LinearMap() {
               />
             )}
             {isDest && <circle cx={p.x} cy={p.y} r={12} fill="#fde047" className="station-pulse" />}
+            {/* 停車駅ビュー: 停車駅に種別カラーのリング */}
+            {stopSet != null && isStop && (
+              <circle
+                cx={p.x}
+                cy={p.y}
+                r={20}
+                fill="none"
+                stroke={service!.color}
+                strokeWidth={5}
+                opacity={0.9}
+              />
+            )}
             <circle
               cx={p.x}
               cy={p.y}
-              r={s.transfers.length > 0 ? 13 : 10}
-              fill={isCurrent ? '#fde047' : isDest ? '#fca5a5' : '#ffffff'}
+              r={passed ? 7 : s.transfers.length > 0 ? 13 : 10}
+              fill={isCurrent ? '#fde047' : isDest ? '#fca5a5' : passed ? '#475569' : '#ffffff'}
               stroke="#1e293b"
               strokeWidth={3}
               className="station-dot"
@@ -96,7 +115,10 @@ export function LinearMap() {
               textAnchor="start"
               dominantBaseline="middle"
               fontSize={s.name.length > 5 ? 15 : 18}
-              fill={isCurrent ? '#fde047' : isDest ? '#fca5a5' : '#cbd5e1'}
+              fill={
+                isCurrent ? '#fde047' : isDest ? '#fca5a5' : passed ? '#64748b' : '#cbd5e1'
+              }
+              opacity={passed ? 0.7 : 1}
               className="pointer-events-none select-none"
             >
               {s.name}

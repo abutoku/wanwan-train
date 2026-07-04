@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { RIDEABLE, type RideableLineId } from './data/rideable'
+import { RIDEABLE, baseServiceId, type RideableLineId } from './data/rideable'
 import type { RideableLine } from './data/types'
 
 export const STEP_MS = 900 // 1駅ぶんの走行時間
@@ -39,10 +39,12 @@ interface GameState {
   destinationIndex: number | null
   arrivedIndex: number | null // 到着演出用
   transferFlash: boolean // 乗り換え直後の演出用
+  serviceId: string | null // 停車駅ビューで選択中の種別（種別のない路線は null）
 
   startGame: (start?: { lineId: RideableLineId; index: number }) => void
   backToTitle: () => void
   setDirection: (direction: Direction) => void
+  setService: (serviceId: string) => void
   togglePlay: () => void
   stepForward: () => Promise<void>
   stepBackward: () => Promise<void>
@@ -62,15 +64,19 @@ export const useGame = create<GameState>((set, get) => ({
   destinationIndex: null,
   arrivedIndex: null,
   transferFlash: false,
+  serviceId: null,
 
   // タイトルで選んだ駅からスタート（未指定なら山手線・東京駅）。方向は選び直してもらう
-  startGame: (start) =>
+  startGame: (start) => {
+    const lineId = start?.lineId ?? 'yamanote'
     set({
       screen: 'game',
-      lineId: start?.lineId ?? 'yamanote',
+      lineId,
       currentIndex: start?.index ?? 0,
       direction: 'fwd',
-    }),
+      serviceId: baseServiceId(RIDEABLE[lineId]),
+    })
+  },
 
   backToTitle: () => {
     if (get().isMoving) return
@@ -84,12 +90,15 @@ export const useGame = create<GameState>((set, get) => ({
       destinationIndex: null,
       arrivedIndex: null,
       transferFlash: false,
+      serviceId: null,
     })
   },
 
   setDirection: (direction) => {
     if (!get().isMoving) set({ direction })
   },
+
+  setService: (serviceId) => set({ serviceId }),
 
   togglePlay: () => set({ isPlaying: !get().isPlaying }),
 
@@ -157,6 +166,7 @@ export const useGame = create<GameState>((set, get) => ({
       destinationIndex: null,
       arrivedIndex: null,
       transferFlash: true,
+      serviceId: baseServiceId(RIDEABLE[lineId]),
     })
     setTimeout(() => {
       if (get().transferFlash) set({ transferFlash: false })

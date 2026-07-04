@@ -105,4 +105,33 @@ export const TOYOKO_LINE: RideableLine = {
   textColor: '#ffffff',
   loop: false,
   stations: STATIONS,
+  services: [
+    {
+      id: 'local', name: '各駅停車', color: '#64748B', textColor: '#ffffff',
+      stops: 'all',
+    },
+    {
+      id: 'express', name: '急行', color: '#E7211A', textColor: '#ffffff',
+      stops: [
+        'ty-shibuya', 'ty-naka-meguro', 'ty-gakugei-daigaku', 'ty-jiyugaoka',
+        'ty-den-en-chofu', 'ty-tamagawa', 'ty-musashi-kosugi', 'ty-hiyoshi',
+        'ty-tsunashima', 'ty-kikuna', 'ty-yokohama',
+      ],
+    },
+    {
+      id: 'commuter-ltd-express', name: '通勤特急', color: '#0068B7', textColor: '#ffffff',
+      note: '平日の朝夕のみ運転',
+      stops: [
+        'ty-shibuya', 'ty-naka-meguro', 'ty-jiyugaoka', 'ty-musashi-kosugi',
+        'ty-hiyoshi', 'ty-kikuna', 'ty-yokohama',
+      ],
+    },
+    {
+      id: 'ltd-express', name: '特急', color: '#FF6600', textColor: '#ffffff',
+      stops: [
+        'ty-shibuya', 'ty-naka-meguro', 'ty-jiyugaoka', 'ty-musashi-kosugi',
+        'ty-kikuna', 'ty-yokohama',
+      ],
+    },
+  ],
 }

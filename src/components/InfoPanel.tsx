@@ -1,5 +1,5 @@
 import { useGame, directionDelta, atTerminus } from '../store'
-import { RIDEABLE, resolveTransfer } from '../data/rideable'
+import { RIDEABLE, resolveTransfer, serviceStopsAt } from '../data/rideable'
 import { LINES } from '../data/lines'
 
 export function InfoPanel() {
@@ -34,6 +34,36 @@ export function InfoPanel() {
           {station.name}
           <span className="text-xs font-normal text-slate-400 ml-2">{station.kana}</span>
         </div>
+
+        {/* この駅にとまる種別（種別のある路線のみ） */}
+        {line.services && (
+          <div className="mb-2.5">
+            <div className="text-[10px] tracking-[0.2em] text-slate-400 mb-1.5">
+              この駅にとまる電車
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {line.services.map((sv) => {
+                const stops = serviceStopsAt(sv, station.id)
+                return stops ? (
+                  <span
+                    key={sv.id}
+                    className="text-[10px] font-bold rounded-full px-2 py-0.5"
+                    style={{ background: sv.color, color: sv.textColor }}
+                  >
+                    {sv.name}
+                  </span>
+                ) : (
+                  <span
+                    key={sv.id}
+                    className="text-[10px] rounded-full px-2 py-0.5 bg-slate-800/70 text-slate-500 line-through"
+                  >
+                    {sv.name}
+                  </span>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         <div className="text-[10px] tracking-[0.2em] text-slate-400 mb-1.5">
           乗り換え案内 — タップで乗り換え
