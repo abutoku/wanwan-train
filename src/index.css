@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+:root {
+  --yamanote: #9acd32;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Space Grotesk', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
+    sans-serif;
+  background: #020617;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+/* 半透明ガラス調のパネル */
+.panel {
+  background: rgba(15, 23, 42, 0.66);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 14px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+.pulse-soft {
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+/* 選択中トラック上を進行方向へ流れる破線 */
+@keyframes flow {
+  to {
+    stroke-dashoffset: -288;
+  }
+}
+.flow-cw {
+  animation: flow 5s linear infinite;
+}
+.flow-ccw {
+  animation: flow 5s linear infinite reverse;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.bob {
+  animation: bob 0.9s steps(2) infinite;
+}
+
+/* 駅のホバー/タップ時のフィードバック */
+.station-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.15s ease-out;
+}
+.station-group:hover .station-dot,
+.station-group:active .station-dot {
+  transform: scale(1.35);
+}
+.station-group:hover text {
+  fill: #f8fafc;
+}
+
+/* 目的地の駅のパルス */
+@keyframes station-pulse {
+  0% {
+    r: 12;
+    opacity: 0.9;
+  }
+  100% {
+    r: 28;
+    opacity: 0;
+  }
+}
+.station-pulse {
+  animation: station-pulse 1s ease-out infinite;
+}
