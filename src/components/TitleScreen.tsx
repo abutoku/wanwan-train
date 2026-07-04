@@ -138,7 +138,7 @@ export function TitleScreen() {
         </button>
 
         <div className="text-xs tracking-wider text-slate-500">
-          NOW RUNNING — JR山手線・銀座線・丸ノ内線・日比谷線・東急東横線
+          NOW RUNNING — JR山手線・JR中央線(快速)・銀座線・丸ノ内線・日比谷線・東急東横線
         </div>
       </div>
     </div>

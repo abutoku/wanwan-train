@@ -58,6 +58,8 @@ export const LINES = {
   tokyuTamagawa: { name: '東急多摩川線', color: '#AE0378' },
   minatomirai: { name: 'みなとみらい線', color: '#003687' },
   sotetsu: { name: '相鉄本線', color: '#003D8F' },
+  oume: { name: 'JR青梅線', color: '#F15A22' },
+  keioTakao: { name: '京王高尾線', color: '#DD0077' },
   yokohamaLine: { name: 'JR横浜線', color: '#9ACD32' },
   nambu: { name: 'JR南武線', color: '#FFD400' },
   blueLine: { name: '横浜市営地下鉄ブルーライン', color: '#006CB6' },

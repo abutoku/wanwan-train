@@ -6,6 +6,7 @@ import { LinearMap } from './LinearMap'
 import { CenterInfo } from './CenterInfo'
 import { InfoPanel } from './InfoPanel'
 import { Controls } from './Controls'
+import { ServicePicker } from './ServicePicker'
 
 export function GameScreen() {
   const isPlaying = useGame((s) => s.isPlaying)
@@ -56,6 +57,7 @@ export function GameScreen() {
 
         <aside className="shrink-0 max-h-[45dvh] lg:max-h-none lg:w-[380px] xl:w-[420px] overflow-y-auto border-t lg:border-t-0 lg:border-l border-slate-800 bg-slate-950/60 p-3 space-y-3">
           <Controls />
+          <ServicePicker />
           <InfoPanel />
         </aside>
       </main>
