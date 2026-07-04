@@ -1,4 +1,5 @@
 import { N } from './data/yamanote'
+import type { Direction } from './store'
 
 // SVG viewBox 1000x1000 上の正円
 export const CX = 500
@@ -31,6 +32,16 @@ export function pointAt(thetaDeg: number, scale = 1) {
 export function tangentDeg(thetaDeg: number) {
   const t = (thetaDeg * Math.PI) / 180
   return (Math.atan2(RY * Math.cos(t), -RX * Math.sin(t)) * 180) / Math.PI
+}
+
+// 実数駅インデックス pos → 円周上の座標と進行方向の角度。
+// fwd(外回り)は外側トラック、rev(内回り)は内側トラックを走る
+export function alongLoop(pos: number, dir: Direction) {
+  const theta = pos * DEG_PER_STATION
+  const scale = dir === 'fwd' ? TRACK_OUTER : TRACK_INNER
+  const { x, y } = pointAt(theta, scale)
+  const angle = dir === 'fwd' ? tangentDeg(theta) : tangentDeg(theta) + 180
+  return { x, y, angle }
 }
 
 // 駅ごとのタップ判定エリア（12°ぶんの円環セクター）。

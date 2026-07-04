@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useGame, AUTO_DWELL_MS } from '../store'
-import { YAMANOTE_GREEN } from '../data/lines'
+import { RIDEABLE } from '../data/rideable'
 import { LoopMap } from './LoopMap'
+import { LinearMap } from './LinearMap'
 import { CenterInfo } from './CenterInfo'
 import { InfoPanel } from './InfoPanel'
 import { Controls } from './Controls'
@@ -10,15 +11,18 @@ export function GameScreen() {
   const isPlaying = useGame((s) => s.isPlaying)
   const isMoving = useGame((s) => s.isMoving)
   const currentIndex = useGame((s) => s.currentIndex)
+  const lineId = useGame((s) => s.lineId)
   const stepForward = useGame((s) => s.stepForward)
   const backToTitle = useGame((s) => s.backToTitle)
 
-  // 再生中: 停車したら AUTO_DWELL_MS 待って次の駅へ
+  const line = RIDEABLE[lineId]
+
+  // 再生中: 停車したら AUTO_DWELL_MS 待って次の駅へ（直線路線の終点では自動停止）
   useEffect(() => {
     if (!isPlaying || isMoving) return
     const t = setTimeout(() => void stepForward(), AUTO_DWELL_MS)
     return () => clearTimeout(t)
-  }, [isPlaying, isMoving, currentIndex, stepForward])
+  }, [isPlaying, isMoving, currentIndex, lineId, stepForward])
 
   return (
     <div className="h-dvh flex flex-col bg-slate-950 text-slate-100">
@@ -38,15 +42,15 @@ export function GameScreen() {
         </div>
         <span
           className="text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full shrink-0"
-          style={{ background: YAMANOTE_GREEN, color: '#14330a' }}
+          style={{ background: line.color, color: line.textColor }}
         >
-          JY 山手線
+          {line.symbol} {line.name}
         </span>
       </header>
 
       <main className="flex-1 min-h-0 flex flex-col lg:flex-row">
         <section className="relative flex-1 min-h-0">
-          <LoopMap />
+          {line.loop ? <LoopMap key={lineId} /> : <LinearMap key={lineId} />}
           <CenterInfo />
         </section>
 

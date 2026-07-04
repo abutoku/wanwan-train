@@ -8,6 +8,7 @@ export interface Line {
 export const YAMANOTE_GREEN = '#9ACD32'
 
 export const LINES = {
+  yamanote: { name: 'JR山手線', color: '#9ACD32' },
   chuoRapid: { name: 'JR中央線(快速)', color: '#F15A22' },
   sobuLocal: { name: 'JR中央・総武線(各停)', color: '#FFD400' },
   keihinTohoku: { name: 'JR京浜東北線', color: '#00B2E5' },
@@ -52,6 +53,15 @@ export const LINES = {
   toden: { name: '都電荒川線', color: '#EF5A9D' },
   nipporiToneri: { name: '日暮里・舎人ライナー', color: '#D5007F' },
   tx: { name: 'つくばエクスプレス', color: '#1D2088' },
+  tobuSkytree: { name: '東武スカイツリーライン', color: '#005AAB' },
+  oimachi: { name: '東急大井町線', color: '#F18D00' },
+  tokyuTamagawa: { name: '東急多摩川線', color: '#AE0378' },
+  minatomirai: { name: 'みなとみらい線', color: '#003687' },
+  sotetsu: { name: '相鉄本線', color: '#003D8F' },
+  yokohamaLine: { name: 'JR横浜線', color: '#9ACD32' },
+  nambu: { name: 'JR南武線', color: '#FFD400' },
+  blueLine: { name: '横浜市営地下鉄ブルーライン', color: '#006CB6' },
+  greenLine: { name: '横浜市営地下鉄グリーンライン', color: '#00A650' },
 } as const satisfies Record<string, Line>
 
 export type LineId = keyof typeof LINES
