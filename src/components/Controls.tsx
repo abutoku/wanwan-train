@@ -1,10 +1,5 @@
-import { useGame, stopsBetween, type Direction } from '../store'
-import { STATIONS } from '../data/yamanote'
-
-const DIRECTIONS: { id: Direction; label: string; sub: string }[] = [
-  { id: 'inner', label: '内回り ⟲', sub: '反時計回り' },
-  { id: 'outer', label: '外回り ⟳', sub: '時計回り' },
-]
+import { useGame, stopsBetween, atTerminus, type Direction } from '../store'
+import { RIDEABLE, directionLabels } from '../data/rideable'
 
 function PlayIcon() {
   return (
@@ -23,6 +18,7 @@ function PauseIcon() {
 }
 
 export function Controls() {
+  const lineId = useGame((s) => s.lineId)
   const direction = useGame((s) => s.direction)
   const isMoving = useGame((s) => s.isMoving)
   const isPlaying = useGame((s) => s.isPlaying)
@@ -33,19 +29,32 @@ export function Controls() {
   const stepForward = useGame((s) => s.stepForward)
   const stepBackward = useGame((s) => s.stepBackward)
 
-  const dest = destinationIndex != null ? STATIONS[destinationIndex] : null
+  const line = RIDEABLE[lineId]
+  const labels = directionLabels(line)
+  const directions: { id: Direction; label: string; sub: string }[] = [
+    { id: 'rev', ...labels.rev },
+    { id: 'fwd', ...labels.fwd },
+  ]
+
+  const back: Direction = direction === 'fwd' ? 'rev' : 'fwd'
+  const forwardBlocked = atTerminus(currentIndex, direction, line)
+  const backBlocked = atTerminus(currentIndex, back, line)
+
+  const dest = destinationIndex != null ? line.stations[destinationIndex] : null
   const remaining =
-    destinationIndex != null ? stopsBetween(currentIndex, destinationIndex, direction) : null
+    destinationIndex != null
+      ? stopsBetween(currentIndex, destinationIndex, direction, line)
+      : null
 
   return (
     <div className="panel p-3.5 space-y-3.5">
       {/* 方向 */}
       <div>
         <div className="text-[10px] tracking-[0.2em] text-slate-400 mb-1.5">
-          方向 — どちら回りに乗る？
+          方向 — どちら{line.loop ? '回り' : 'ゆき'}に乗る？
         </div>
         <div className="grid grid-cols-2 gap-1.5">
-          {DIRECTIONS.map((d) => (
+          {directions.map((d) => (
             <button
               key={d.id}
               onClick={() => setDirection(d.id)}
@@ -69,7 +78,7 @@ export function Controls() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => void stepBackward()}
-            disabled={isMoving}
+            disabled={isMoving || backBlocked}
             className="flex-1 py-3 border border-slate-700 text-slate-200 text-sm font-medium rounded-lg hover:border-slate-500 transition-colors disabled:opacity-50"
           >
             ← 戻る
@@ -87,7 +96,7 @@ export function Controls() {
           </button>
           <button
             onClick={() => void stepForward()}
-            disabled={isMoving}
+            disabled={isMoving || forwardBlocked}
             className="flex-1 py-3 border border-lime-400/50 bg-lime-400/5 text-lime-300 text-sm font-medium rounded-lg hover:bg-lime-400/15 hover:border-lime-400/80 transition-colors disabled:opacity-50"
           >
             進む →
@@ -101,6 +110,8 @@ export function Controls() {
           <span className="text-yellow-300">
             {dest.name} まで あと {remaining} 駅
           </span>
+        ) : forwardBlocked && !isPlaying ? (
+          <span className="text-slate-300">終点です — 方向を変えるか、乗り換えよう</span>
         ) : isPlaying ? (
           <span className="text-lime-300">自動運転中 — 各駅に停車しながら進みます</span>
         ) : (

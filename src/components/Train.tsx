@@ -1,17 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
-import { useGame, STEP_MS } from '../store'
-import { N } from '../data/yamanote'
-import {
-  DEG_PER_STATION,
-  TRACK_INNER,
-  TRACK_OUTER,
-  indexToTheta,
-  mod,
-  pointAt,
-  tangentDeg,
-} from '../geometry'
-import { YAMANOTE_GREEN } from '../data/lines'
+import { useGame, STEP_MS, type Direction } from '../store'
+import { mod } from '../geometry'
 
 const norm180 = (d: number) => {
   let v = mod(d, 360)
@@ -19,44 +9,61 @@ const norm180 = (d: number) => {
   return v
 }
 
-export function Train() {
+interface TrainProps {
+  // 実数駅インデックス pos → 線路上の座標と進行方向の角度（地図レイアウト側が提供）
+  along: (pos: number, dir: Direction) => { x: number; y: number; angle: number }
+  color: string // ラインカラー（車体の帯）
+  n: number // 駅数
+  loop: boolean
+}
+
+export function Train({ along, color, n, loop }: TrainProps) {
   const currentIndex = useGame((s) => s.currentIndex)
   const direction = useGame((s) => s.direction)
 
-  const angle = useMotionValue(indexToTheta(currentIndex))
-  const track = useMotionValue(direction === 'outer' ? TRACK_OUTER : TRACK_INNER)
+  const pos = useMotionValue(currentIndex)
+  // fwd=1 / rev=0。環状線のトラック乗り換えを滑らかにするための補間値
+  const dirMix = useMotionValue(direction === 'fwd' ? 1 : 0)
 
   const prevIndex = useRef(currentIndex)
   const directionRef = useRef(direction)
   directionRef.current = direction
+  const alongRef = useRef(along)
+  alongRef.current = along
 
-  // 1駅ぶんの走行アニメーション（インデックスの差分から回転方向を決める）
+  // 1駅ぶんの走行アニメーション（インデックスの差分から進行方向を決める）
   useEffect(() => {
-    const diff = mod(currentIndex - prevIndex.current, N)
+    const prev = prevIndex.current
     prevIndex.current = currentIndex
-    if (diff === 0) return
-    const delta = diff === 1 ? DEG_PER_STATION : -DEG_PER_STATION
-    const controls = animate(angle, angle.get() + delta, {
+    let delta = currentIndex - prev
+    if (loop) {
+      const diff = mod(delta, n)
+      delta = diff === 0 ? 0 : diff === 1 ? 1 : -1
+    }
+    if (delta === 0) return
+    const controls = animate(pos, pos.get() + delta, {
       duration: STEP_MS / 1000,
       ease: 'easeInOut',
     })
     return () => controls.stop()
-  }, [currentIndex, angle])
+  }, [currentIndex, pos, loop, n])
 
-  // 方向切替でトラック（外側/内側の線路）を乗り換える
+  // 方向切替（環状線: 外側/内側トラックの乗り換え）
   useEffect(() => {
-    const controls = animate(track, direction === 'outer' ? TRACK_OUTER : TRACK_INNER, {
+    const controls = animate(dirMix, direction === 'fwd' ? 1 : 0, {
       duration: 0.4,
       ease: 'easeInOut',
     })
     return () => controls.stop()
-  }, [direction, track])
+  }, [direction, dirMix])
 
-  const transform = useTransform([angle, track], (values) => {
-    const [a, s] = values as [number, number]
-    const { x, y } = pointAt(a, s)
-    // 進行方向を向く接線角度（内回りは逆向き）
-    let rot = norm180(directionRef.current === 'outer' ? tangentDeg(a) : tangentDeg(a) + 180)
+  const transform = useTransform([pos, dirMix], (values) => {
+    const [p, m] = values as [number, number]
+    const f = alongRef.current(p, 'fwd')
+    const r = alongRef.current(p, 'rev')
+    const x = r.x + (f.x - r.x) * m
+    const y = r.y + (f.y - r.y) * m
+    let rot = norm180(alongRef.current(p, directionRef.current).angle)
     // 上下逆さにならないように反転
     let flip = 1
     if (rot > 90 || rot < -90) {
@@ -68,9 +75,9 @@ export function Train() {
 
   return (
     <motion.g style={{ transform }}>
-      {/* 車体（銀ボディ + ウグイス色帯） */}
+      {/* 車体（銀ボディ + ラインカラー帯） */}
       <rect x={-62} y={-22} width={124} height={44} rx={9} fill="#e2e8f0" stroke="#0f172a" strokeWidth={3} />
-      <rect x={-62} y={8} width={124} height={14} fill={YAMANOTE_GREEN} />
+      <rect x={-62} y={8} width={124} height={14} fill={color} />
       {/* まど + チワワ（窓から大きく乗り出す） */}
       <rect x={-52} y={-14} width={44} height={20} rx={3} fill="#bfdbfe" stroke="#0f172a" strokeWidth={2} />
       <image href="/images/uru.png" x={-54} y={-42} width={48} height={46} className="pixelated" />

@@ -1,18 +1,4 @@
-import type { LineId } from './lines'
-
-export interface Transfer {
-  line: LineId
-  at?: string // 別名駅での乗り換え（例: 日比谷駅）
-}
-
-export interface Station {
-  id: string
-  name: string
-  kana: string
-  en: string
-  number: string // 駅ナンバリング(JY)
-  transfers: Transfer[]
-}
+import type { RideableLine, Station } from './types'
 
 // 外回り（時計回り）順。先頭 = 東京駅。
 // インデックス +1 = 外回りで1駅進む / -1 = 内回りで1駅進む
@@ -184,3 +170,16 @@ export const STATIONS: Station[] = [
 ]
 
 export const N = STATIONS.length // 30
+
+export const YAMANOTE_LINE: RideableLine = {
+  name: '山手線',
+  symbol: 'JY',
+  color: '#9ACD32',
+  textColor: '#14330a',
+  loop: true,
+  stations: STATIONS,
+  directions: {
+    fwd: { label: '外回り ⟳', sub: '時計回り' },
+    rev: { label: '内回り ⟲', sub: '反時計回り' },
+  },
+}
