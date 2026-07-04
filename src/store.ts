@@ -40,7 +40,7 @@ interface GameState {
   arrivedIndex: number | null // 到着演出用
   transferFlash: boolean // 乗り換え直後の演出用
 
-  startGame: () => void
+  startGame: (start?: { lineId: RideableLineId; index: number }) => void
   backToTitle: () => void
   setDirection: (direction: Direction) => void
   togglePlay: () => void
@@ -63,7 +63,14 @@ export const useGame = create<GameState>((set, get) => ({
   arrivedIndex: null,
   transferFlash: false,
 
-  startGame: () => set({ screen: 'game' }),
+  // タイトルで選んだ駅からスタート（未指定なら山手線・東京駅）。方向は選び直してもらう
+  startGame: (start) =>
+    set({
+      screen: 'game',
+      lineId: start?.lineId ?? 'yamanote',
+      currentIndex: start?.index ?? 0,
+      direction: 'fwd',
+    }),
 
   backToTitle: () => {
     if (get().isMoving) return

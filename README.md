@@ -7,6 +7,14 @@
 
 ## 機能
 
+### スタート駅の選択・駅名検索（第3フェーズ: 完了）
+
+- **タイトル画面でスタート駅を選択** — 「しゅっぱつ駅」パネルで出発する路線・駅を選べる
+  （未選択なら従来どおり山手線・東京駅スタート）
+- **フリーワード駅名検索** — 駅名・かな・ローマ字・駅ナンバリングの部分一致で検索
+  （「渋谷」「シブヤ」「shibuya」「渋谷駅」いずれでもヒット）
+- **同名駅は路線ごとに候補表示** — 例: 渋谷 → JR山手線 / 銀座線 / 東急東横線 の3件から選ぶ
+
 ### 路線と乗り換え（第2フェーズ: 完了）
 
 - **乗車可能5路線** — JR山手線（30駅）・東京メトロ銀座線（19駅）・丸ノ内線（25駅）・
@@ -42,7 +50,8 @@ npm run preview  # ビルド結果のプレビュー
 TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
 
 詳細は [docs/phase1-yamanote.md](docs/phase1-yamanote.md) /
-[docs/phase2-multiline.md](docs/phase2-multiline.md) を参照。
+[docs/phase2-multiline.md](docs/phase2-multiline.md) /
+[docs/phase3-station-search.md](docs/phase3-station-search.md) を参照。
 
 ## ロードマップ
 
@@ -50,7 +59,7 @@ TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
 |---|---|---|
 | 1 | 山手線・東京駅スタート・乗り換え案内・内回り/外回り | ✅ 完了 |
 | 2 | 東京メトロ・東急など他路線の追加、乗り換えでの路線切替 | ✅ 完了（銀座線・丸ノ内線・日比谷線・東横線） |
-| 3 | スタート駅の選択・駅名フリーワード検索 | 未着手 |
+| 3 | スタート駅の選択・駅名フリーワード検索 | ✅ 完了 |
 | 4 | 快速・特快などの停車駅表示 | 未着手 |
 | 5 | デプロイ（Cloudflare Pages 予定） | 未着手 |
 | 6 | チワワに特化した可愛い演出 | 未着手 |
