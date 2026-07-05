@@ -3,7 +3,7 @@ import { useGame } from '../store'
 import { RIDEABLE } from '../data/rideable'
 import { searchStations, type SearchHit } from '../data/search'
 
-// 初期のしゅっぱつ駅 = JR山手線 東京
+// 初期の出発駅 = JR山手線 東京
 const DEFAULT_START: SearchHit = {
   lineId: 'yamanote',
   line: RIDEABLE.yamanote,
@@ -52,16 +52,12 @@ export function TitleScreen() {
         />
 
         <p className="text-sm sm:text-base leading-relaxed text-slate-300">
-          チワワの「うる」と「ろい」と一緒に、東京の路線をめぐる旅へ。
-          <br />
-          <span className="text-slate-400">
-            どちら行きに乗ればいいか、あと何駅で着くかがひと目でわかる。
-          </span>
+          「うる」と「ろい」と一緒に、東京の路線をめぐろう。
         </p>
 
-        {/* しゅっぱつ駅の選択 */}
+        {/* 出発駅の選択 */}
         <div className="panel w-full max-w-md p-4 text-left">
-          <div className="text-[10px] tracking-[0.2em] text-slate-400 mb-2">しゅっぱつ駅</div>
+          <div className="text-[10px] tracking-[0.2em] text-slate-400 mb-2">出発駅</div>
           <div className="flex items-center gap-2.5 mb-3">
             <span
               className="text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0"
@@ -81,7 +77,7 @@ export function TitleScreen() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="駅名でけんさく（例: 渋谷 / しぶや / shibuya）"
+            placeholder="駅名で検索（例: 渋谷 / しぶや / shibuya）"
             aria-label="スタート駅を検索"
             className="w-full rounded-lg border border-slate-700 bg-slate-900/70 px-3 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-lime-400/60"
           />

@@ -13,7 +13,7 @@ export default defineConfig({
       manifest: {
         name: 'Wan Wan Train',
         short_name: 'WanWanTrain',
-        description: 'ドット絵のチワワと東京の路線をめぐる路線図アプリ',
+        description: 'チワワと東京の路線をめぐる路線図アプリ',
         lang: 'ja',
         display: 'standalone',
         orientation: 'portrait',
