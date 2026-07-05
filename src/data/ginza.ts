@@ -31,7 +31,9 @@ const STATIONS: Station[] = [
   },
   {
     id: 'g-tameike-sanno', name: '溜池山王', kana: 'ためいけさんのう', en: 'Tameike-sanno', number: 'G06',
-    transfers: [{ line: 'namboku' }, { line: 'chiyoda', at: '国会議事堂前駅' }],
+    transfers: [
+      { line: 'namboku' }, { line: 'chiyoda', at: '国会議事堂前駅' }, { line: 'marunouchi', at: '国会議事堂前駅' },
+    ],
   },
   {
     id: 'g-toranomon', name: '虎ノ門', kana: 'とらのもん', en: 'Toranomon', number: 'G07',
@@ -42,6 +44,7 @@ const STATIONS: Station[] = [
     transfers: [
       { line: 'yamanote' }, { line: 'keihinTohoku' }, { line: 'tokaido' },
       { line: 'uenoTokyo' }, { line: 'yokosukaSobu' }, { line: 'asakusa' }, { line: 'yurikamome' },
+      { line: 'oedo', at: '汐留駅' },
     ],
   },
   {

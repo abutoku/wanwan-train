@@ -48,7 +48,7 @@ const STATIONS: Station[] = [
   },
   {
     id: 'h-tsukiji', name: '築地', kana: 'つきじ', en: 'Tsukiji', number: 'H11',
-    transfers: [{ line: 'yurakuchoLine', at: '新富町駅' }],
+    transfers: [{ line: 'yurakuchoLine', at: '新富町駅' }, { line: 'oedo', at: '築地市場駅' }],
   },
   {
     id: 'h-hatchobori', name: '八丁堀', kana: 'はっちょうぼり', en: 'Hatchobori', number: 'H12',

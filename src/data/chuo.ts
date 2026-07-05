@@ -8,6 +8,7 @@ const STATIONS: Station[] = [
       { line: 'yamanote' }, { line: 'keihinTohoku' }, { line: 'tokaido' },
       { line: 'uenoTokyo' }, { line: 'yokosukaSobu' }, { line: 'keiyo' },
       { line: 'tokaidoShinkansen' }, { line: 'tohokuShinkansen' }, { line: 'marunouchi' },
+      { line: 'hanzomon', at: '大手町駅' },
     ],
   },
   {
