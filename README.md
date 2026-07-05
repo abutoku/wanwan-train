@@ -5,7 +5,14 @@
 「どちら行き（向き）に乗ればいいか」「あと何駅で着くか」を、
 電車が路線図上を実際に走る様子で直感的に把握できます。
 
+**🚃 公開中: https://wanwan-train.pages.dev**
+
 ## 機能
+
+### デプロイ（第5フェーズ: 完了）
+
+- **Cloudflare Pages で公開** — https://wanwan-train.pages.dev
+- wrangler CLI による直接アップロード方式（`npm run deploy` でビルド + 本番反映）
 
 ### 快速・特快などの停車駅表示（第4フェーズ: 完了）
 
@@ -56,6 +63,17 @@ npm run build    # 型チェック + 本番ビルド
 npm run preview  # ビルド結果のプレビュー
 ```
 
+## デプロイ
+
+Cloudflare Pages（プロジェクト `wanwan-train`）へ wrangler で直接アップロードします。
+
+```bash
+npx wrangler login   # 初回のみ: Cloudflare 認証
+npm run deploy       # ビルド + 本番デプロイ（--branch=main）
+```
+
+詳細は [docs/phase5-deploy.md](docs/phase5-deploy.md) を参照。
+
 ## 技術スタック
 
 TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
@@ -63,7 +81,8 @@ TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
 詳細は [docs/phase1-yamanote.md](docs/phase1-yamanote.md) /
 [docs/phase2-multiline.md](docs/phase2-multiline.md) /
 [docs/phase3-station-search.md](docs/phase3-station-search.md) /
-[docs/phase4-train-services.md](docs/phase4-train-services.md) を参照。
+[docs/phase4-train-services.md](docs/phase4-train-services.md) /
+[docs/phase5-deploy.md](docs/phase5-deploy.md) を参照。
 
 ## ロードマップ
 
@@ -73,5 +92,6 @@ TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
 | 2 | 東京メトロ・東急など他路線の追加、乗り換えでの路線切替 | ✅ 完了（銀座線・丸ノ内線・日比谷線・東横線） |
 | 3 | スタート駅の選択・駅名フリーワード検索 | ✅ 完了 |
 | 4 | 快速・特快などの停車駅表示 | ✅ 完了（中央線快速を追加、停車駅ビュー） |
-| 5 | デプロイ（Cloudflare Pages 予定） | 未着手 |
-| 6 | チワワに特化した可愛い演出 | 未着手 |
+| 5 | デプロイ | ✅ 完了（Cloudflare Pages: https://wanwan-train.pages.dev ） |
+| 6 | PWA化 | 未着手 |
+| 7 | チワワに特化した可愛い演出 | 未着手 |
