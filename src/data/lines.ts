@@ -11,7 +11,7 @@ export const LINES = {
   yamanote: { name: 'JR山手線', color: '#9ACD32' },
   chuoRapid: { name: 'JR中央線(快速)', color: '#F15A22' },
   sobuLocal: { name: 'JR中央・総武線(各停)', color: '#FFD400' },
-  keihinTohoku: { name: 'JR京浜東北線', color: '#00B2E5' },
+  keihinTohoku: { name: 'JR京浜東北・根岸線', color: '#00B2E5' },
   tokaido: { name: 'JR東海道線', color: '#F68B1E' },
   uenoTokyo: { name: 'JR上野東京ライン', color: '#F68B1E' },
   utsunomiyaTakasaki: { name: 'JR宇都宮線・高崎線', color: '#F68B1E' },
@@ -64,6 +64,16 @@ export const LINES = {
   nambu: { name: 'JR南武線', color: '#FFD400' },
   blueLine: { name: '横浜市営地下鉄ブルーライン', color: '#006CB6' },
   greenLine: { name: '横浜市営地下鉄グリーンライン', color: '#00A650' },
+  musashino: { name: 'JR武蔵野線', color: '#EF7A00' },
+  setagaya: { name: '東急世田谷線', color: '#FCC70D' },
+  kodomonokuni: { name: 'こどもの国線', color: '#0075C2' },
+  tobuUrbanPark: { name: '東武アーバンパークライン', color: '#00A7D7' },
+  enoden: { name: '江ノ島電鉄', color: '#007448' },
+  shonanMonorail: { name: '湘南モノレール', color: '#DC0032' },
+  seasideLine: { name: '金沢シーサイドライン', color: '#00A0DE' },
+  keikyuAirport: { name: '京急空港線', color: '#E60012' },
+  keikyuDaishi: { name: '京急大師線', color: '#E60012' },
+  newShuttle: { name: '埼玉新都市交通ニューシャトル', color: '#E8384F' },
 } as const satisfies Record<string, Line>
 
 export type LineId = keyof typeof LINES

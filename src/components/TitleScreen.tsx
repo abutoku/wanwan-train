@@ -11,6 +11,9 @@ const DEFAULT_START: SearchHit = {
   station: RIDEABLE.yamanote.stations[0],
 }
 
+const LINE_COUNT = Object.keys(RIDEABLE).length
+const STATION_COUNT = Object.values(RIDEABLE).reduce((a, l) => a + l.stations.length, 0)
+
 export function TitleScreen() {
   const startGame = useGame((s) => s.startGame)
   const [selected, setSelected] = useState<SearchHit>(DEFAULT_START)
@@ -118,7 +121,7 @@ export function TitleScreen() {
                 </ul>
               ) : (
                 <div className="text-xs text-slate-400 bg-slate-800/60 rounded-lg px-3 py-2.5">
-                  みつかりませんでした（乗車できる5路線の駅から探せます）
+                  みつかりませんでした（乗車できる{LINE_COUNT}路線の駅から探せます）
                 </div>
               )}
             </div>
@@ -134,7 +137,7 @@ export function TitleScreen() {
         </button>
 
         <div className="text-xs tracking-wider text-slate-500">
-          NOW RUNNING — JR山手線・JR中央線(快速)・銀座線・丸ノ内線・日比谷線・東急東横線
+          NOW RUNNING — JR・東京メトロ・都営・東急・京急ほか {LINE_COUNT}路線・{STATION_COUNT}駅
         </div>
       </div>
     </div>

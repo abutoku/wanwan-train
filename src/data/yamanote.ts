@@ -9,6 +9,7 @@ export const STATIONS: Station[] = [
       { line: 'chuoRapid' }, { line: 'keihinTohoku' }, { line: 'tokaido' },
       { line: 'uenoTokyo' }, { line: 'yokosukaSobu' }, { line: 'keiyo' },
       { line: 'tokaidoShinkansen' }, { line: 'tohokuShinkansen' }, { line: 'marunouchi' },
+      { line: 'hanzomon', at: '大手町駅' },
     ],
   },
   {
@@ -23,6 +24,7 @@ export const STATIONS: Station[] = [
     transfers: [
       { line: 'keihinTohoku' }, { line: 'tokaido' }, { line: 'uenoTokyo' },
       { line: 'yokosukaSobu' }, { line: 'ginza' }, { line: 'asakusa' }, { line: 'yurikamome' },
+      { line: 'oedo', at: '汐留駅' },
     ],
   },
   {

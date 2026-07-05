@@ -5,6 +5,17 @@ import { GINZA_LINE } from './ginza'
 import { MARUNOUCHI_LINE } from './marunouchi'
 import { HIBIYA_LINE } from './hibiya'
 import { TOYOKO_LINE } from './toyoko'
+import { HANZOMON_LINE } from './hanzomon'
+import { FUKUTOSHIN_LINE } from './fukutoshin'
+import { OEDO_LINE } from './oedo'
+import { ASAKUSA_LINE } from './asakusa'
+import { DENENTOSHI_LINE } from './denentoshi'
+import { MINATOMIRAI_LINE } from './minatomirai'
+import { RINKAI_LINE } from './rinkai'
+import { KEIKYU_LINE } from './keikyu'
+import { SHONAN_SHINJUKU_LINE } from './shonanShinjuku'
+import { YOKOSUKA_LINE } from './yokosuka'
+import { KEIHIN_TOHOKU_LINE } from './keihinTohoku'
 
 // 乗車可能路線のレジストリ。キーは lines.ts の LineId と共通
 export const RIDEABLE = {
@@ -14,6 +25,17 @@ export const RIDEABLE = {
   marunouchi: MARUNOUCHI_LINE,
   hibiya: HIBIYA_LINE,
   toyoko: TOYOKO_LINE,
+  hanzomon: HANZOMON_LINE,
+  fukutoshin: FUKUTOSHIN_LINE,
+  oedo: OEDO_LINE,
+  asakusa: ASAKUSA_LINE,
+  denentoshi: DENENTOSHI_LINE,
+  minatomirai: MINATOMIRAI_LINE,
+  rinkai: RINKAI_LINE,
+  keikyu: KEIKYU_LINE,
+  shonanShinjuku: SHONAN_SHINJUKU_LINE,
+  yokosukaSobu: YOKOSUKA_LINE, // JR横須賀線（LineId は乗換マスタと共通の yokosukaSobu）
+  keihinTohoku: KEIHIN_TOHOKU_LINE,
 } as const satisfies Record<string, RideableLine>
 
 export type RideableLineId = keyof typeof RIDEABLE
