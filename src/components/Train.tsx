@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { animate, motion, useMotionValue, useTransform } from 'framer-motion'
-import { useGame, STEP_MS, type Direction } from '../store'
+import { useGame, travelDurationMs, type Direction } from '../store'
 import { mod } from '../geometry'
 
 const norm180 = (d: number) => {
@@ -31,18 +31,27 @@ export function Train({ along, color, n, loop }: TrainProps) {
   const alongRef = useRef(along)
   alongRef.current = along
 
-  // 1駅ぶんの走行アニメーション（インデックスの差分から進行方向を決める）
+  // 走行アニメーション。タップ移動では複数駅ぶんを1本の連続アニメーションで進む。
+  // 走行中の行き先差し替えにも対応するため、現在の実位置 pos から絶対ターゲットへ動かす
   useEffect(() => {
     const prev = prevIndex.current
     prevIndex.current = currentIndex
-    let delta = currentIndex - prev
-    if (loop) {
-      const diff = mod(delta, n)
-      delta = diff === 0 ? 0 : diff === 1 ? 1 : -1
+    const from = pos.get()
+    let target: number
+    if (!loop) {
+      target = currentIndex
+    } else {
+      const diff = mod(currentIndex - prev, n)
+      if (diff === 0) return
+      // タップ移動中は選択方向に従って周回する（store の stopsBetween と一致させる）。
+      // ボタン操作（±1）は最短方向
+      const traveling = useGame.getState().destinationIndex != null
+      const fwd = traveling ? directionRef.current === 'fwd' : diff <= n / 2
+      target = fwd ? from + mod(currentIndex - from, n) : from - mod(from - currentIndex, n)
     }
-    if (delta === 0) return
-    const controls = animate(pos, pos.get() + delta, {
-      duration: STEP_MS / 1000,
+    if (target === from) return
+    const controls = animate(pos, target, {
+      duration: travelDurationMs(Math.abs(target - from)) / 1000,
       ease: 'easeInOut',
     })
     return () => controls.stop()

@@ -3,8 +3,12 @@ import { RIDEABLE, baseServiceId, type RideableLineId } from './data/rideable'
 import type { RideableLine } from './data/types'
 
 export const STEP_MS = 900 // 1駅ぶんの走行時間
-export const HOP_PAUSE_MS = 250 // タップ移動時の駅間ポーズ
+export const TRAVEL_EXTRA_MS = 320 // タップ移動時、2駅目以降1駅あたりの加算時間
 export const AUTO_DWELL_MS = 1800 // 再生中の停車時間
+
+// タップ移動の所要時間: 1駅なら STEP_MS、以降は1駅ごとに TRAVEL_EXTRA_MS 加算
+export const travelDurationMs = (hops: number) =>
+  STEP_MS + Math.max(0, Math.ceil(hops) - 1) * TRAVEL_EXTRA_MS
 
 export type Screen = 'title' | 'game'
 // fwd = インデックス +1 方向（山手線: 外回り=時計回り / 直線路線: 駅番号が増える方向）
@@ -178,13 +182,15 @@ export const useGame = create<GameState>((set, get) => ({
     travelActive = true
     set({ isMoving: true })
 
-    while (get().destinationIndex != null && get().currentIndex !== get().destinationIndex) {
-      await get()._hop(directionDelta(get().direction) as 1 | -1)
-      if (get().destinationIndex != null && get().currentIndex !== get().destinationIndex) {
-        // 直線路線で終点に達したのに目的地に届かない場合は打ち切り（通常は起こらない）
-        if (atTerminus(get().currentIndex, get().direction, RIDEABLE[get().lineId])) break
-        await sleep(HOP_PAUSE_MS)
-      }
+    // 一駅ずつ止まらず、目的地まで一気に進む（走行中に行き先が差し替われば続けて追従）
+    while (true) {
+      const { currentIndex, destinationIndex, direction, lineId } = get()
+      if (destinationIndex == null || destinationIndex === currentIndex) break
+      const hops = stopsBetween(currentIndex, destinationIndex, direction, RIDEABLE[lineId])
+      // 現在方向で到達不能なら打ち切り（通常は起こらない）
+      if (hops == null || hops === 0) break
+      set({ currentIndex: destinationIndex })
+      await sleep(travelDurationMs(hops))
     }
 
     const target = get().destinationIndex
