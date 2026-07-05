@@ -69,6 +69,90 @@ body {
   animation: bob 0.9s steps(2) infinite;
 }
 
+/* 走行中のチワワ: 上下にぴょこぴょこ（ピクセル調のカクカク感） */
+@keyframes chiwawa-ride {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.chiwawa-ride {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: chiwawa-ride 0.45s steps(2) infinite;
+}
+
+/* 到着時のチワワ: 足元を支点にしっぽふりふり風 */
+@keyframes chiwawa-happy {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+.chiwawa-happy {
+  transform-box: fill-box;
+  transform-origin: 50% 88%;
+  animation: chiwawa-happy 0.3s ease-in-out infinite;
+}
+
+/* 線路に残る肉球の足あと */
+@keyframes paw-print-fade {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.paw-print {
+  animation: paw-print-fade 1.6s linear forwards;
+}
+
+/* 到着時の肉球バースト（--dx / --dy へ飛んで消える） */
+@keyframes paw-pop {
+  0% {
+    transform: translate(0, 0) scale(0.3);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(1.1);
+    opacity: 0;
+  }
+}
+.paw-pop {
+  animation: paw-pop 1.3s ease-out forwards;
+  opacity: 0;
+}
+
+/* 吹き出しのぽんっと出現 */
+@keyframes pop-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.pop-in {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: pop-in 0.35s ease-out both;
+}
+
 /* 駅のホバー/タップ時のフィードバック */
 .station-dot {
   transform-box: fill-box;
