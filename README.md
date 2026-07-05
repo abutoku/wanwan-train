@@ -9,6 +9,12 @@
 
 ## 機能
 
+### 自動デプロイ（第7フェーズ: 完了）
+
+- **main ブランチへのマージで本番へ自動反映** — GitHub Actions が
+  ビルド（型チェック含む）→ Cloudflare Pages へのデプロイを実行
+- Actions タブから手動実行（workflow_dispatch）も可能
+
 ### PWA化（第6フェーズ: 完了）
 
 - **ホーム画面に追加してアプリとして起動可能**（スタンドアロン表示・ドット絵チワワのアイコン）
@@ -72,14 +78,18 @@ npm run preview  # ビルド結果のプレビュー
 
 ## デプロイ
 
-Cloudflare Pages（プロジェクト `wanwan-train`）へ wrangler で直接アップロードします。
+**main ブランチにマージすると GitHub Actions が自動で本番デプロイします**
+（Cloudflare Pages プロジェクト `wanwan-train`）。
+
+手動デプロイ（フォールバック）も引き続き可能です:
 
 ```bash
 npx wrangler login   # 初回のみ: Cloudflare 認証
 npm run deploy       # ビルド + 本番デプロイ（--branch=main）
 ```
 
-詳細は [docs/phase5-deploy.md](docs/phase5-deploy.md) を参照。
+詳細は [docs/phase5-deploy.md](docs/phase5-deploy.md) /
+[docs/phase7-auto-deploy.md](docs/phase7-auto-deploy.md) を参照。
 
 ## 技術スタック
 
@@ -91,7 +101,8 @@ vite-plugin-pwa（Workbox）
 [docs/phase3-station-search.md](docs/phase3-station-search.md) /
 [docs/phase4-train-services.md](docs/phase4-train-services.md) /
 [docs/phase5-deploy.md](docs/phase5-deploy.md) /
-[docs/phase6-pwa.md](docs/phase6-pwa.md) を参照。
+[docs/phase6-pwa.md](docs/phase6-pwa.md) /
+[docs/phase7-auto-deploy.md](docs/phase7-auto-deploy.md) を参照。
 
 ## ロードマップ
 
@@ -103,4 +114,7 @@ vite-plugin-pwa（Workbox）
 | 4 | 快速・特快などの停車駅表示 | ✅ 完了（中央線快速を追加、停車駅ビュー） |
 | 5 | デプロイ | ✅ 完了（Cloudflare Pages: https://wanwan-train.pages.dev ） |
 | 6 | PWA化 | ✅ 完了（インストール可能 + オフライン対応） |
-| 7 | チワワに特化した可愛い演出 | 未着手 |
+| 7 | 自動デプロイ（main マージで本番反映） | ✅ 完了（GitHub Actions） |
+| 8 | 挙動の変更 | 未着手 |
+| 9 | 路線の追加（大江戸線・浅草線・半蔵門線ほか） | 未着手 |
+| 10 | チワワに特化した可愛い演出 | 未着手 |
