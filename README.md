@@ -9,6 +9,13 @@
 
 ## 機能
 
+### PWA化（第6フェーズ: 完了）
+
+- **ホーム画面に追加してアプリとして起動可能**（スタンドアロン表示・ドット絵チワワのアイコン）
+- **オフライン対応** — 全アセットをプリキャッシュし、電波の弱い駅ホームや地下でも
+  路線図・駅検索・乗換案内が動作（Webフォントは2回目の訪問以降オフライン利用可）
+- Service Worker は新バージョン検出時に自動更新（vite-plugin-pwa / Workbox）
+
 ### デプロイ（第5フェーズ: 完了）
 
 - **Cloudflare Pages で公開** — https://wanwan-train.pages.dev
@@ -76,13 +83,15 @@ npm run deploy       # ビルド + 本番デプロイ（--branch=main）
 
 ## 技術スタック
 
-TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
+TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand /
+vite-plugin-pwa（Workbox）
 
 詳細は [docs/phase1-yamanote.md](docs/phase1-yamanote.md) /
 [docs/phase2-multiline.md](docs/phase2-multiline.md) /
 [docs/phase3-station-search.md](docs/phase3-station-search.md) /
 [docs/phase4-train-services.md](docs/phase4-train-services.md) /
-[docs/phase5-deploy.md](docs/phase5-deploy.md) を参照。
+[docs/phase5-deploy.md](docs/phase5-deploy.md) /
+[docs/phase6-pwa.md](docs/phase6-pwa.md) を参照。
 
 ## ロードマップ
 
@@ -93,5 +102,5 @@ TypeScript / React 19 + Vite / Tailwind CSS v4 / Framer Motion / Zustand
 | 3 | スタート駅の選択・駅名フリーワード検索 | ✅ 完了 |
 | 4 | 快速・特快などの停車駅表示 | ✅ 完了（中央線快速を追加、停車駅ビュー） |
 | 5 | デプロイ | ✅ 完了（Cloudflare Pages: https://wanwan-train.pages.dev ） |
-| 6 | PWA化 | 未着手 |
+| 6 | PWA化 | ✅ 完了（インストール可能 + オフライン対応） |
 | 7 | チワワに特化した可愛い演出 | 未着手 |
