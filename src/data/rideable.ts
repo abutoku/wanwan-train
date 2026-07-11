@@ -16,6 +16,13 @@ import { KEIKYU_LINE } from './keikyu'
 import { SHONAN_SHINJUKU_LINE } from './shonanShinjuku'
 import { YOKOSUKA_LINE } from './yokosuka'
 import { KEIHIN_TOHOKU_LINE } from './keihinTohoku'
+import { BLUE_LINE } from './blueLine'
+import { SOTETSU_LINE } from './sotetsu'
+import { SOBU_LOCAL_LINE } from './sobuLocal'
+import { KEIKYU_AIRPORT_LINE } from './keikyuAirport'
+import { SAIKYO_LINE } from './saikyo'
+import { TOEI_SHINJUKU_LINE } from './toeiShinjuku'
+import { YURAKUCHO_LINE } from './yurakucho'
 
 // 乗車可能路線のレジストリ。キーは lines.ts の LineId と共通
 export const RIDEABLE = {
@@ -36,6 +43,13 @@ export const RIDEABLE = {
   shonanShinjuku: SHONAN_SHINJUKU_LINE,
   yokosukaSobu: YOKOSUKA_LINE, // JR横須賀線（LineId は乗換マスタと共通の yokosukaSobu）
   keihinTohoku: KEIHIN_TOHOKU_LINE,
+  sobuLocal: SOBU_LOCAL_LINE,
+  saikyo: SAIKYO_LINE,
+  yurakuchoLine: YURAKUCHO_LINE,
+  toeiShinjuku: TOEI_SHINJUKU_LINE,
+  keikyuAirport: KEIKYU_AIRPORT_LINE,
+  blueLine: BLUE_LINE,
+  sotetsu: SOTETSU_LINE,
 } as const satisfies Record<string, RideableLine>
 
 export type RideableLineId = keyof typeof RIDEABLE
